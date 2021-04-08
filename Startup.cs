@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetflixGraphQL.Database.DatabaseQuery.Implementation;
+using NetflixGraphQL.Database.Implementation;
 using NetflixGraphQL.Database.Interfaces;
+using NetflixGraphQL.Helpers;
 using NetflixGraphQL.Queries;
 using NetflixGraphQL.Schema;
 using NetflixGraphQL.Types;
@@ -24,16 +25,18 @@ namespace NetflixGraphQL
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //services.AddResponseCompression(options =>
+            //{
+            //    options.Providers.Add(new CustomCompressionProvider());
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IAllShows, AllShows>();
@@ -45,7 +48,6 @@ namespace NetflixGraphQL
             services.AddSingleton<ISchema>(new ShowsSchema(new FuncDependencyResolver(type => sp.GetService(type))));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -62,6 +64,8 @@ namespace NetflixGraphQL
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            //app.UseResponseCompression();
+            app.UseMvcWithDefaultRoute();
             app.UseMvc();
         }
     }

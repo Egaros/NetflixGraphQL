@@ -9,10 +9,29 @@ namespace NetflixGraphQL.Queries
         public ShowQueries(IAllShows allShows)
         {
             Field<ListGraphType<ShowsType>>(
-                "show",
+                "allShows",
                 resolve: context => allShows.GetAllShows());
+
+            Field<ListGraphType<ShowsType>>(
+                "actionShows",
+                resolve: context => allShows.GetActionShows());
+
+            Field<ListGraphType<ShowsType>>(
+                "comedyShows",
+                resolve: context => allShows.GetComedyShows());
+
+            Field<ListGraphType<ShowsType>>(
+                "comingSoonShows",
+                resolve: context => allShows.GetComingSoonShows());
+
+            Field<ListGraphType<ShowsType>>(
+                "searchForShow",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "title" }),
+                resolve: context =>
+                {
+                    var title = context.GetArgument<string>("title");
+                    return allShows.SearchForShows(title);
+                });
         }
-
-
     }
 }
