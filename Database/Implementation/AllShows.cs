@@ -5,7 +5,7 @@ using MongoDB.Driver.Linq;
 using NetflixGraphQL.Database.Interfaces;
 using NetflixGraphQL.Models;
 
-namespace NetflixGraphQL.Database.DatabaseQuery.Implementation
+namespace NetflixGraphQL.Database.Implementation
 {
     public class AllShows : IAllShows
     {

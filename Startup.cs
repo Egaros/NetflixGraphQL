@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetflixGraphQL.Database.DatabaseQuery.Implementation;
+using NetflixGraphQL.Database.Implementation;
 using NetflixGraphQL.Database.Interfaces;
 using NetflixGraphQL.Queries;
 using NetflixGraphQL.Schema;
