@@ -1,14 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GraphiQl;
+using GraphQL;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetflixGraphQL.Database.DatabaseQuery.Implementation;
+using NetflixGraphQL.Database.Interfaces;
+using NetflixGraphQL.Queries;
+using NetflixGraphQL.Schema;
+using NetflixGraphQL.Types;
 
 namespace NetflixGraphQL
 {
@@ -33,6 +36,13 @@ namespace NetflixGraphQL
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IAllShows, AllShows>();
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<ShowQueries>();
+            services.AddSingleton<ShowsType>();
+
+            var sp = services.BuildServiceProvider();
+            services.AddSingleton<ISchema>(new ShowsSchema(new FuncDependencyResolver(type => sp.GetService(type))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +57,7 @@ namespace NetflixGraphQL
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseGraphiQl();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
