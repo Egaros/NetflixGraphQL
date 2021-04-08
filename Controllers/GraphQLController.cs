@@ -19,6 +19,7 @@ namespace NetflixGraphQL.Controllers
             this.documentExecuter = documentExecuter;
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
         {
