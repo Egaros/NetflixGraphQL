@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using NetflixGraphQL.Database.Interfaces;
 using NetflixGraphQL.Models;
-using System.Linq;
-using MongoDB.Bson;
-using Newtonsoft.Json;
 
 namespace NetflixGraphQL.Database.Implementation
 {
@@ -14,11 +14,15 @@ namespace NetflixGraphQL.Database.Implementation
     {
         private static MongoClient client = new MongoClient(DatabaseConstants.DatabasePath);
         private IMongoQueryable<MovieModel> dbQuery = client.GetDatabase("Movies").GetCollection<MovieModel>("Movies").AsQueryable();
+        private static Random rnd = new Random();
 
-        public async Task<IEnumerable<MovieModel>> GetAllShows()
+        public async Task<IEnumerable<MovieModel>> GetAllShows() => await dbQuery.ToListAsync();
+
+        public async Task<MovieModel> GetFeaturedShow()
         {
-            return await dbQuery.ToListAsync();
-        } 
+            var query = await dbQuery.ToListAsync();
+            return query.Where(x => x.IsFeatured).ElementAt(rnd.Next(query.Count));
+        }
 
         public async Task<IEnumerable<MovieModel>> GetActionShows()
         {

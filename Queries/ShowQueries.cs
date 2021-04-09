@@ -12,6 +12,10 @@ namespace NetflixGraphQL.Queries
                 "allShows",
                 resolve: context => allShows.GetAllShows());
 
+            Field<ShowsType>(
+                "featuredShow",
+                resolve: context => allShows.GetFeaturedShow());
+
             Field<ListGraphType<ShowsType>>(
                 "actionShows",
                 resolve: context => allShows.GetActionShows());
