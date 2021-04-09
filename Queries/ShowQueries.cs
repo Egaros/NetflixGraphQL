@@ -25,6 +25,10 @@ namespace NetflixGraphQL.Queries
                 resolve: context => allShows.GetComingSoonShows());
 
             Field<ListGraphType<ShowsType>>(
+                "popularShows",
+                resolve: context => allShows.GetPopularShows());
+
+            Field<ListGraphType<ShowsType>>(
                 "searchForShow",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "title" }),
                 resolve: context =>

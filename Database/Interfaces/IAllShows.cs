@@ -6,11 +6,12 @@ namespace NetflixGraphQL.Database.Interfaces
 {
     public interface IAllShows
     {
-        Task<List<MovieModel>> GetAllShows();
+        Task<IEnumerable<MovieModel>> GetAllShows();
         Task<IEnumerable<MovieModel>> GetActionShows();
         Task<IEnumerable<MovieModel>> GetComedyShows();
         Task<IEnumerable<MovieModel>> GetComingSoonShows();
-        Task<List<MovieModel>> SearchForShows(string title);
+        Task<IEnumerable<MovieModel>> GetPopularShows();
+        Task<IEnumerable<MovieModel>> SearchForShows(string title);
 
     }
 }
