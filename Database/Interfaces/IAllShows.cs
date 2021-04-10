@@ -13,6 +13,6 @@ namespace NetflixGraphQL.Database.Interfaces
         Task<IEnumerable<MovieModel>> GetComingSoonShows();
         Task<IEnumerable<MovieModel>> GetPopularShows();
         Task<IEnumerable<MovieModel>> SearchForShows(string title);
-
+        Task<MovieModel> SearchForSingleShows(string title);
     }
 }

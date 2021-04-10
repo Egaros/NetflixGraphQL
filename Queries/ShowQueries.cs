@@ -33,12 +33,21 @@ namespace NetflixGraphQL.Queries
                 resolve: context => allShows.GetPopularShows());
 
             Field<ListGraphType<ShowsType>>(
-                "searchForShow",
+                "searchForShowList",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "title" }),
                 resolve: context =>
                 {
                     var title = context.GetArgument<string>("title");
                     return allShows.SearchForShows(title);
+                });
+
+            Field<ShowsType>(
+                "searchForShow",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "title" }),
+                resolve: context =>
+                {
+                    var title = context.GetArgument<string>("title");
+                    return allShows.SearchForSingleShows(title);
                 });
         }
     }
