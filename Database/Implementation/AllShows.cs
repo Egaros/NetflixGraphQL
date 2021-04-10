@@ -57,5 +57,14 @@ namespace NetflixGraphQL.Database.Implementation
             return response;
         }
 
+        public async Task<MovieModel> SearchForSingleShows(string title)
+        {
+            var db = client.GetDatabase("Movies").GetCollection<MovieModel>("Movies");
+
+            var filter = Builders<MovieModel>.Filter.Eq("title", title);
+            var response = await (await db.FindAsync(filter)).FirstOrDefaultAsync();
+            return response;
+        }
+
     }
 }
